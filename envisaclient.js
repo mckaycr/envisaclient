@@ -7,7 +7,7 @@ var strReady = '%00,01,1C08,08,00, MCKAY\'S SYSTEM   Ready to Arm  $'
 client.setEncoding('utf8');
 client.connect(4025, '10.0.0.205', function() {
 	logger.log('Initiating Envisalink client connection...', syslog.LOG_INFO);
-	client.write('MoeBas');
+	client.write('user');
 });
 
 client.on('data', function(data) {
