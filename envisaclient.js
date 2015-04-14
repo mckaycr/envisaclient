@@ -2,7 +2,7 @@ var net = require('net')
 	,syslog = require('syslogudp')
 	,logger = syslog.createClient(514,'10.0.0.40');
 var client = new net.Socket();
-var strReady = '%00,01,1C08,08,00, MCKAY\'S SYSTEM   Ready to Arm  $'
+var strReady = "%00,01,1C08,08,00, MCKAY'S SYSTEM   Ready to Arm  $"
 
 client.setEncoding('utf8');
 client.connect(4025, '10.0.0.205', function() {
