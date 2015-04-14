@@ -96,7 +96,7 @@ var evl_Response = (function(){
 })();
 
 //Expected response from Envisalink, This will convert to a readable string
-var strEX = '%00,01,1C08,08,00, MCKAY\'S SYSTEM   Ready to Arm  $'
+var strEX = "%00,01,1C08,08,00, MCKAY'S SYSTEM   Ready to Arm  $"
 console.log(evl_Response.parse_Response(strEX))
 
 
