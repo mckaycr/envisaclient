@@ -78,24 +78,26 @@ var evl_Response = (function(){
 
     return tmp
     })
-
-    return {
+  return {
         parse_Response: function(strInput){
             var arrResponse = strInput.split(',')
-
-            return {
-                type : evl_ResponseType[arrResponse[0]].name, 
+            parse_Response = {
+                rtype : evl_ResponseType[arrResponse[0]].name,
                 part : evl_Partition_Status_Code[arrResponse[1]].description,
+                led : iconLED(hex2bin(arrResponse[2]).result),
                 user : arrResponse[3],
                 beep : BEEP_field[arrResponse[4]],
-                msg  : arrResponse[5].replace('$','').trim()
+                msg  : arrResponse[5].replace('$','').trim() 
             }
+            console.log(parse_Response.rtype);
+            return parse_Response;                
         }
     }
-   
 })();
 
 //Expected response from Envisalink, This will convert to a readable string
-evl_Response.parse_Response('%00,01,1C08,08,00, MCKAY\'S SYSTEM   Ready to Arm  $').type
+
+evl_Response.parse_Response('%00,01,1C08,08,00, MCKAY\'S SYSTEM   Ready to Arm  $').rtype
+
 
 
