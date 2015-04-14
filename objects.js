@@ -89,15 +89,15 @@ var evl_Response = (function(){
                 beep : BEEP_field[arrResponse[4]],
                 msg  : arrResponse[5].replace('$','').trim() 
             }
-            console.log(parse_Response.rtype);
+            //console.log(parse_Response.rtype);
             return parse_Response;                
         }
     }
 })();
 
 //Expected response from Envisalink, This will convert to a readable string
-
-evl_Response.parse_Response('%00,01,1C08,08,00, MCKAY\'S SYSTEM   Ready to Arm  $').rtype
+var strEX = '%00,01,1C08,08,00, MCKAY\'S SYSTEM   Ready to Arm  $'
+console.log(evl_Response.parse_Response(strEX))
 
 
 
