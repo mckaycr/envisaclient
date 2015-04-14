@@ -1,5 +1,5 @@
 
-var evl_Response = (function(){
+module.exports = function(message){
     var evl_ResponseType = {
         'Login' : {name:'Login Prompt',description:'Sent During Session Login Only.', handler:'login'},
         'OK' : {name:'Login Success', description: 'Send During Session Login Only, successful login', handler: 'login_success'},
@@ -78,26 +78,17 @@ var evl_Response = (function(){
 
     return tmp
     })
-  return {
-        parse_Response: function(strInput){
-            var arrResponse = strInput.split(',')
-            parse_Response = {
-                rtype : evl_ResponseType[arrResponse[0]].name,
-                part : evl_Partition_Status_Code[arrResponse[1]].description,
-                led : iconLED(hex2bin(arrResponse[2]).result),
-                user : arrResponse[3],
-                beep : BEEP_field[arrResponse[4]],
-                msg  : arrResponse[5].replace('$','').trim() 
-            }
-            //console.log(parse_Response.rtype);
-            return parse_Response;                
-        }
+  var arrResponse = message.split(',')
+    objResponse = {
+        type : evl_ResponseType[arrResponse[0]].name,
+        part : evl_Partition_Status_Code[arrResponse[1]].description,
+        led : iconLED(hex2bin(arrResponse[2]).result),
+        user : arrResponse[3],
+        beep : BEEP_field[arrResponse[4]],
+        msg  : arrResponse[5].replace('$','').trim() 
     }
-})();
 
-//Expected response from Envisalink, This will convert to a readable string
-var strEX = "%00,01,1C08,08,00, MCKAY'S SYSTEM   Ready to Arm  $"
-console.log(evl_Response.parse_Response(strEX))
-
+    return objResponse;                
+}
 
 
