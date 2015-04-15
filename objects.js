@@ -1,7 +1,7 @@
 
 module.exports = function(message){
     var evl_ResponseType = {
-        'Login' : {name:'Login Prompt',description:'Sent During Session Login Only.', handler:'login'},
+        'Login:' : {name:'Login Prompt',description:'Sent During Session Login Only.', handler:'login'},
         'OK' : {name:'Login Success', description: 'Send During Session Login Only, successful login', handler: 'login_success'},
         'FAILED' : {name: 'Login Failure', description: 'Sent During Session Login Only, password not accepted', handler: 'login_failure'},
         'Timed Out' : {name: 'Login Interaction Timed Out', description: 'Sent during Session Login Only, socket connection is then closed', handler: 'login_timeout'},
@@ -79,14 +79,19 @@ module.exports = function(message){
     return tmp
     })
   var arrResponse = message.split(',')
+    if(arrResponse.length>2){
     objResponse = {
         type : evl_ResponseType[arrResponse[0]].name,
         part : evl_Partition_Status_Code[arrResponse[1]].description,
         led : iconLED(hex2bin(arrResponse[2]).result),
         user : arrResponse[3],
         beep : BEEP_field[arrResponse[4]],
-        msg  : arrResponse[5].replace('$','').trim() 
-    }
+        msg  : arrResponse[5].replace('$','').trim()}
+    } else {
+        objResponse = {
+            type : evl_ResponseType[arrResponse[0]].name
+            }
+        }
 
     return objResponse;                
 }
