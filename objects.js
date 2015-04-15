@@ -1,5 +1,6 @@
 
 module.exports = function(message){
+    var bin = require('./hex2bin');
     var evl_ResponseType = {
         'Login:' : {name:'Login Prompt',description:'Sent During Session Login Only.', handler:'login'},
         'OK' : {name:'Login Success', description: 'Send During Session Login Only, successful login', handler: 'login_success'},
@@ -36,28 +37,6 @@ module.exports = function(message){
         '04':'Coninuous Fast Beep (trouble/urgency)',
         '05':'Continuous Slow Beep (exit delay)'
     }
-
-    //Requried in order to convert the HEX response into BIN
-    var hex2bin = (function(s) {
-        var i, k, part, ret = '';
-        // lookup table for easier conversion. '0' characters are padded for '1' to '7'
-        var lookupTable = {
-            '0': '0000', '1': '0001', '2': '0010', '3': '0011', '4': '0100',
-            '5': '0101', '6': '0110', '7': '0111', '8': '1000', '9': '1001',
-            'a': '1010', 'b': '1011', 'c': '1100', 'd': '1101',
-            'e': '1110', 'f': '1111',
-            'A': '1010', 'B': '1011', 'C': '1100', 'D': '1101',
-            'E': '1110', 'F': '1111'
-        };
-        for (i = 0; i < s.length; i += 1) {
-            if (lookupTable.hasOwnProperty(s[i])) {
-                ret += lookupTable[s[i]];
-            } else {
-                return { valid: false };
-            }
-        }
-        return { valid: true, result: ret };
-    })
     //Required in order to interpret the bitfield
     var iconLED = (function(bitfield){
         var status = {'ARMED STAY':bitfield[0],'LOW BATTERY':bitfield[1],'FIRE':bitfield[2],'READY':bitfield[3],
@@ -82,10 +61,10 @@ module.exports = function(message){
     if(arrResponse.length>2){
     objResponse = {
         type : evl_ResponseType[arrResponse[0]].name,
-        part : evl_Partition_Status_Code[arrResponse[1]].description,
-        led : iconLED(hex2bin(arrResponse[2]).result),
-        user : arrResponse[3],
-        beep : BEEP_field[arrResponse[4]],
+        partition : evl_Partition_Status_Code[arrResponse[1]].description,
+        icons : iconLED(bin(arrResponse[2]).result),
+        numeric : arrResponse[3],
+        beeps : BEEP_field[arrResponse[4]],
         msg  : arrResponse[5].replace('$','').trim()}
     } else {
         objResponse = {
