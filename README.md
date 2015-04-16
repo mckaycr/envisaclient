@@ -26,11 +26,8 @@ Everything is hardcoded right now as I'm still working on my initial build.
 
 Dependencies:
 -------------
-NodeJS is required
-https://nodejs.org/
+[NodeJS](https://nodejs.org/) is required
 
-At the moment syslogUDP is required.
-https://www.npmjs.com/package/syslogudp
+At the moment [syslogUDP](https://www.npmjs.com/package/syslogudp) is required.
 
-bitfield is required.
-https://github.com/fb55/bitfield
+[Bitfield](https://github.com/fb55/bitfield) is required.
