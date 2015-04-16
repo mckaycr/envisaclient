@@ -2,7 +2,7 @@
 
 This project uses the [Ademco TPI provided by Eyez-On](http://forum.eyez-on.com/FORUM/viewtopic.php?f=6&t=301). It processes events from the Envisalink server.
 
-This project was originally a fork of the [AlarmServer project for DSC panels](https://github.com/juggie/AlarmServer) - credit to them for the base code.   However, the API's between DSC and Honeywell are so different that it didn't make sense to try to maintain a single codebase.  In comes the next credit which goes to [MttTW/HoneyAlarmServer](ttps://github.com/MattTW/HoneyAlarmServer) who implemented the TPI specific to the Ademco Panel.
+This project was originally a fork of the [AlarmServer project for DSC panels](https://github.com/juggie/AlarmServer) - credit to them for the base code.   However, the API's between DSC and Honeywell are so different that it didn't make sense to try to maintain a single codebase.  In comes the next credit which goes to [MttTW/HoneyAlarmServer](https://github.com/MattTW/HoneyAlarmServer) who implemented the TPI specific to the Ademco Panel.
 
 This project uses the concepts from the above mentions to implement something that works with NodeJS.  
 
