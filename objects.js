@@ -66,17 +66,9 @@ module.exports = function(message){
 
 	    return tmp;
     })
-
-	var zoneFaults = (function(str,num_char){
-		var tmpdata = ''
-		for(i=0;i<=16;i=i+num_char){
-			tmpdata = tmpdata + reverseString(bin(str.substr(i,num_char)).result)
-		}
-	 	return tmpdata.split('').map(Number).map(Boolean)
-	})
 	//This function takes the 8byte Hex converts it to a 64 bit bitfield. If true returns the index indicating which zones are at fault.
 	//While the string is little-endian, the individual 8 bytes are normal big-endian, MSbit on the left, so there is a swap that takes place ever num_char characters
-	function arrZones(str,num_char){
+	function zoneFaults(str,num_char){
 		var tmpdata = ''
 		for(var i=0;i<=16;i=i+num_char){
 			tmpdata = tmpdata + bin(str.substr(i,num_char)).result.split('').reverse().join('')
@@ -90,19 +82,21 @@ module.exports = function(message){
 	}
     //This is the final part which assigns the the converted elements into the property
 	var arrResponse = message.split(',')
-    if(arrResponse.length>2){
-	    objResponse = {
-	        type : evl_ResponseType[arrResponse[0]].name,
-	        partition : evl_Partition_Status_Code[arrResponse[1]].description,
-	        icons : iconLED(bin(arrResponse[2]).result),
-	        numeric : arrResponse[3],
-	        beeps : BEEP_field[arrResponse[4]],
-	        msg  : arrResponse[5].replace('$','').trim()};
-    	} 
+	objResponse = {
+		type : evl_ResponseType[arrResponse[0]].name
+    }
+    if(arrResponse.length<=2){
+    	if(arrResponse[0]=='%01'){objResponse.numeric = zoneFaults(arrResponse[1].replace('$','').trim(),2)}
+    	if(arrResponse[0]=='%02'){objResponse.numeric = partStat(arrResponse[1].replace('$','').trim(),2)}
+    	if(arrResponse[0]=='%03'){objResponse.numeric = sysEvnt(arrResponse[1].replace('$','').trim(),2)}
+    } 
     else {
-        objResponse = {
-            type : evl_ResponseType[arrResponse[0]].name
-        };
+    	objResponse.type = evl_ResponseType[arrResponse[0]].name;
+	    objResponse.partition = evl_Partition_Status_Code[arrResponse[1]].description;
+	    objResponse.icons = iconLED(bin(arrResponse[2]).result);
+	    objResponse.numeric = arrResponse[3];
+	    objResponse.beeps = BEEP_field[arrResponse[4]];
+	    objResponse.msg  = arrResponse[5].replace('$','').trim();
     }
     return objResponse;                
 }
