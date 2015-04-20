@@ -36,14 +36,15 @@ module.exports = function(message){
         '08' : {name:'IN_ALARM', description:'Partition is in Alarm', pluginhandler: 'alarmTriggered'},
         '09' : {name:'ALARM_IN_MEMORY', description:'Alarm Has Occurred (Alarm in Memory)', pluginhandler: 'alarmCleared'},
     };
+    //Returns an array of partition statuses where the index + 1 is the partition number
     function partStat(str){
-    	partStat = [];
-    	for(var i=0;i<=str.length-1;i++){
+    	var arrTemp = [];
+    	for(var i=0;i<=str.length-1;i+=){
     		var tmp = str.substr(i,2)
-    		partStat.push(evl_Partition_Status_Code[tmp])
+    		arrTemp.push(evl_Partition_Status_Code[tmp])
     		i++
     	}
-    	return partStat;
+    	return arrTemp;
     }
     //This is the fourth part of the Virtual Keypad Update
     var BEEP_field ={
