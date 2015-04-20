@@ -36,6 +36,15 @@ module.exports = function(message){
         '08' : {name:'IN_ALARM', description:'Partition is in Alarm', pluginhandler: 'alarmTriggered'},
         '09' : {name:'ALARM_IN_MEMORY', description:'Alarm Has Occurred (Alarm in Memory)', pluginhandler: 'alarmCleared'},
     };
+    function partStat(str){
+    	partStat = [];
+    	for(var i=0;i<=str.length-1;i++){
+    		var tmp = str.substr(i,2)
+    		partStat.push(evl_Partition_Status_Code[tmp])
+    		i++
+    	}
+    	return partStat;
+    }
     //This is the fourth part of the Virtual Keypad Update
     var BEEP_field ={
         '00':'OFF',
@@ -87,7 +96,7 @@ module.exports = function(message){
     }
     if(arrResponse.length<=2){
     	if(arrResponse[0]=='%01'){objResponse.numeric = zoneFaults(arrResponse[1].replace('$','').trim(),2)}
-    	if(arrResponse[0]=='%02'){objResponse.numeric = partStat(arrResponse[1].replace('$','').trim(),2)}
+    	if(arrResponse[0]=='%02'){objResponse.numeric = partStat(arrResponse[1].replace('$','').trim())}
     	if(arrResponse[0]=='%03'){objResponse.numeric = sysEvnt(arrResponse[1].replace('$','').trim(),2)}
     } 
     else {
