@@ -107,6 +107,7 @@ module.exports = function(message){
 	    objResponse.beeps = BEEP_field[arrResponse[4]];
 	    objResponse.msg  = arrResponse[5].replace('$','').trim();
     }
+    objResponse.raw = message;
     return objResponse;                
 }
 
