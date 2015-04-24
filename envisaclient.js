@@ -17,7 +17,7 @@ client.on('data', function(data) {
 	};
 }).on('connect', function() {
   // Immediately after connection, send login Password
-  client.write('MoeBas')
+  client.write('password')
 }).on('end', function() {
   console.log('DONE');
 });
