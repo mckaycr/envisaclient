@@ -22,17 +22,14 @@ client.on('data', function(data) {
 		}
 	};
 }).on('connect', function() {
-<<<<<<< HEAD
   // Immediately after connection, send login Password
   client.write('password')
-=======
 	// Immediately after connection, send login Password
 	logger.log('Authentication process initiated',syslog.LOG_INFO);
 	client.write('password')
 }).on('error', function() {
 	// This occurs when the script doesn't disconnect with the server properly
 	logger.log('Oops... Something is wrong. Restart you Envisalink module.',syslog.LOG_INFO);
->>>>>>> origin/dev
 }).on('end', function() {
 	//	Connect was ended
 	logger.log('Connection to Server Terminated',syslog.LOG_INFO);
