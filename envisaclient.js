@@ -24,6 +24,7 @@ client.on('data', function(data) {
 }).on('connect', function() {
 	// Immediately after connection, send login Password
 	logger.log('Authentication process initiated',syslog.LOG_INFO);
+	client.write('password')
 }).on('error', function() {
 	// This occurs when the script doesn't disconnect with the server properly
 	logger.log('Oops... Something is wrong. Restart you Envisalink module.',syslog.LOG_INFO);
