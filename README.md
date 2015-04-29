@@ -31,3 +31,5 @@ Dependencies:
 At the moment [syslogUDP](https://www.npmjs.com/package/syslogudp) is required.
 
 [Bitfield](https://github.com/fb55/bitfield) is required.
+
+[Socket.io](http://socket.io) is required
