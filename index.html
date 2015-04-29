@@ -1,0 +1,14 @@
+<script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
+<script src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
+<script>
+  var socket = io('http://127.0.0.1');
+  socket.on('news', function (data) {
+	$('#status').append($('<p>')).text(data.hello)
+    console.log(data);
+    socket.emit('my other event', 'Client established connection to server');
+   });
+
+  
+</script>
+<div onclick=socket.emit('data','test')>TESTING</div>
+<div id='status'>hi</div>
