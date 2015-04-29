@@ -1,14 +1,25 @@
 <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
 <script src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
 <script>
-  var socket = io('http://127.0.0.1');
-  socket.on('news', function (data) {
-	$('#status').append($('<p>')).text(data.hello)
+  var socket = io('http://127.0.0.1:8181');
+  socket.on('cmd', function (data) {
+	 $("#list").append($("<li>")).text(data.type);
     console.log(data);
-    socket.emit('my other event', 'Client established connection to server');
    });
+
+  socket.on('welcome', function (data) {
+	$('#status').append($('<p>')).text(data)
+    console.log(data);
+    socket.emit('thank you', 'Client established connection to server');
+   });
+
 
   
 </script>
-<div onclick=socket.emit('data','test')>TESTING</div>
-<div id='status'>hi</div>
+<div>
+	  <input type="button" value="Arm System" onclick="socket.emit('cmd','System Armed')">
+</div>
+<div>
+	  <input type="button" value="Disarm System" onclick="socket.emit('cmd','System Disarmed')">
+</div>
+<div id='status'><ul id='list'></ul></div>
