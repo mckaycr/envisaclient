@@ -17,9 +17,9 @@ module.exports = function(message){
         '%03' : {type: 'system', name: 'Realtime CID Event', description: 'A system event has happened that is signaled to either the Envisalerts servers or the central monitoring station', handler: 'realtime_cid_event'},
         '%FF' : {name: 'Envisalink Zone Timer Dump', description: 'This command contains the raw zone timers used inside the Envisalink. The dump is a 256 character packed HEX string representing 64 UINT16 (little endian) zone timers. Zone timers count down from 0xFFFF (zone is open) to 0x0000 (zone is closed too long ago to remember). Each tick of the zone time is actually 5 seconds so a zone timer of 0xFFFE means 5 seconds ago. Remember, the zone timers are LITTLE ENDIAN so the above example would be transmitted as FEFF.', handler: 'zone_timer_dump'},
         '^00' : {type: 'envisalink', name:'Poll', description: 'Envisalink poll', handler: 'poll_response'},
-        '^01' : {type: 'envisalink', name:'Change Default Partition', description: 'Change the partition which keystrokes are sent to when using the virtual keypad.', handler: 'command_response'},
-        '^02' : {type: 'envisalink', name:'Dump Zone Timers', description: 'This command contains the raw zone timers used inside the Envisalink. The dump is a 256 character packed HEX string representing 64 UINT16 (little endian) zone timers. Zone timers count down from 0xFFFF (zone is open) to 0x0000 (zone is closed too long ago to remember). Each tick of the zone time is actually 5 seconds so a zone timer of 0xFFFE means 5 seconds ago. Remember, the zone timers are LITTLE ENDIAN so the above example would be transmitted as FEFF.',handler: 'command_response'},
-        '^03' : {type: 'envisalink', name:'Keypress to Specific Partition', description: 'This will send a keystroke to the panel from an arbitrary partition. Use this if you dont want to change the TPI default partition.' ,handler: 'command_response'},
+        '^1C' : {type: 'envisalink', name:'Change Default Partition', description: 'Change the partition which keystrokes are sent to when using the virtual keypad.', handler: 'command_response'},
+        '^2C' : {type: 'envisalink', name:'Dump Zone Timers', description: 'This command contains the raw zone timers used inside the Envisalink. The dump is a 256 character packed HEX string representing 64 UINT16 (little endian) zone timers. Zone timers count down from 0xFFFF (zone is open) to 0x0000 (zone is closed too long ago to remember). Each tick of the zone time is actually 5 seconds so a zone timer of 0xFFFE means 5 seconds ago. Remember, the zone timers are LITTLE ENDIAN so the above example would be transmitted as FEFF.',handler: 'command_response'},
+        '^3C' : {type: 'envisalink', name:'Keypress to Specific Partition', description: 'This will send a keystroke to the panel from an arbitrary partition. Use this if you dont want to change the TPI default partition.' ,handler: 'command_response'},
         '^0C' : {type: 'envisalink', name:'Response for Invalid Command', description: 'This response is returned when an invalid command number is passed to Envisalink', handler: 'command_response'}
     };
     //If the evl_ResponseType isa Virtal Keypad Updated then this part will be the third element within the string
@@ -164,7 +164,11 @@ module.exports = function(message){
     	var arrTemp = [];
     	for(var i=0;i<=str.length-1;i++){
     		var tmp = str.substr(i,2)
-    		arrTemp.push(evl_Partition_Status_Code[tmp])
+    		var x = 0
+    		if(tmp!='00'){
+    			x++
+    			arrTemp.push('Partition ' + x + ':' + evl_Partition_Status_Code[tmp].description)
+    		}
     		i++
     	}
     	return arrTemp;
@@ -214,9 +218,10 @@ module.exports = function(message){
 		return arrZones;
 	}
     //This is the final part which assigns the the converted elements into the property
+
 	var arrResponse = message.split(',')
 	objResponse = {
-		type : evl_ResponseType[arrResponse[0]].name
+		type : evl_ResponseType[arrResponse[0]]
     }
     if(arrResponse.length<=2){
     	if(arrResponse[0]=='%01'){objResponse.numeric = zoneFaults(arrResponse[1].replace('$','').trim(),2)}
@@ -224,8 +229,8 @@ module.exports = function(message){
     	if(arrResponse[0]=='%03'){objResponse.numeric = sysEvnt(arrResponse[1].replace('$','').trim(),2)}
     } 
     else {
-    	objResponse.type = evl_ResponseType[arrResponse[0]].name;
-	    objResponse.partition = evl_Partition_Status_Code[arrResponse[1]].description;
+    	objResponse.type = evl_ResponseType[arrResponse[0]];
+	    objResponse.partition = 'Partition: ' + arrResponse[1];
 	    objResponse.icons = iconLED(bin(arrResponse[2]).result);
 	    objResponse.numeric = arrResponse[3];
 	    objResponse.beeps = BEEP_field[arrResponse[4]];
