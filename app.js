@@ -7,13 +7,13 @@ var app = require('http').createServer(handler)
 	//net is required to make the TCP connection to the Envisalink
 	,net = require('net')
 	//These two lines are used only if you want to record everything to a syslog server.
-	//,syslog = require('syslogudp')
-	//,logger = syslog.createClient(514,'10.0.0.40')
+	,syslog = require('syslogudp')
+	,logger = syslog.createClient(514,'127.0.0.1')
 	//	strReady indicates the normal state of the system
 	//	I don't want to fill my syslog with this, so if this then don't log
-	,strReady = "%11,01,1C08,08,00"
+	,strReady = "%00,01,1C08,08,00"
 	//This is the connection to Envisalink
-	,client = net.createConnection(4025, '127.0.0.1',{resource:'./'})
+	,client = net.createConnection(4025, '127.0.0.1')
 	,url = require('url')
 	,path = require('path');
 
@@ -48,8 +48,12 @@ io.on('connection', function (socket) {
 	  	//That response so sent to console
 	    console.log(data);
 	})
-  	socket.on('cmd',function (data){
+  	socket.on('rxcmd',function (data){
   		socket.emit('data',data)
+  		console.log(data)
+	})
+	socket.on('txcmd',function (data){
+		client.write(data)
   		console.log(data)
 	})
 });
@@ -69,21 +73,22 @@ client.on('data', function (resp) {
 		//	We don't want to fill the log with those
 		if(arrLines[i]!=null && arrLines[i].search(strReady)==-1){
 			//console.log(arrLines[i])
-			io.sockets.emit('cmd',sys_response(arrLines[i].trim()))
+			io.sockets.emit('rxcmd',sys_response(arrLines[i].trim()))
+			logger.log(sys_response(arrLines[i].trim()).raw,syslog.LOG_INFO);
 		}
 	};
 }).on('connect', function() {
 	// Immediately after connection, send login Password
-	//logger.log('Authentication process initiated',syslog.LOG_INFO);
+	logger.log('Authentication process initiated',syslog.LOG_INFO);
 	//send password to EnvisaLink
 	console.log('Webserver connected to Envisalink')
 	client.write('password')
 }).on('error', function() {
 	// The server is already connected to something (or thinks it is)
-	//logger.log('Oops... Something is wrong. Restart you Envisalink module.',syslog.LOG_INFO);
+	logger.log('Oops... Something is wrong. Restart you Envisalink module.',syslog.LOG_INFO);
 }).on('end', function() {
 	//	Connect was ended
-	//logger.log('Connection to Server Terminated',syslog.LOG_INFO);
+	logger.log('Connection to Server Terminated',syslog.LOG_INFO);
 });
 
 process.on('SIGINT', function() {
