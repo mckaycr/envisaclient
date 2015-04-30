@@ -13,17 +13,28 @@ var app = require('http').createServer(handler)
 	//	I don't want to fill my syslog with this, so if this then don't log
 	,strReady = "%11,01,1C08,08,00"
 	//This is the connection to Envisalink
-	,client = net.createConnection(4025, '127.0.0.1');
+	,client = net.createConnection(4025, '127.0.0.1',{resource:'./'})
+	,url = require('url')
+	,path = require('path');
 
-//have no idea what this does besides maybe error handling in case the index file doesn't exist
+var mimeTypes = {
+    "html": "text/html",
+    "jpeg": "image/jpeg",
+    "jpg": "image/jpeg",
+    "png": "image/png",
+    "js": "text/javascript",
+    "css": "text/css"};
+
+
 function handler (req, res) {
-  fs.readFile(__dirname + '/index.html',
+	if(req.url=="/"){strpath = '/index.html'}else{strpath=req.url}
+  fs.readFile(__dirname + strpath,
   function (err, data) {
     if (err) {
       res.writeHead(500);
       return res.end('Error loading index.html');
     }
-    res.writeHead(200);
+    res.writeHead(200,{'Content-Type':mimeTypes[req.url.split('.')[1]]});
     res.end(data);
   });
 }
@@ -65,6 +76,7 @@ client.on('data', function (resp) {
 	// Immediately after connection, send login Password
 	//logger.log('Authentication process initiated',syslog.LOG_INFO);
 	//send password to EnvisaLink
+	console.log('Webserver connected to Envisalink')
 	client.write('password')
 }).on('error', function() {
 	// The server is already connected to something (or thinks it is)

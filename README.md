@@ -13,8 +13,6 @@ This is my first GitHub project, and I'm still learning how it all works.  The r
  + Connection to the Envisalink is established
  + Events are being recieved and are currently being sent to a syslog server
  + The response string from the Envisalink is being converted into an object with properties that match the TPI documentation
- + webserver works, including a simple web gui that essentially doesn't nothing except send things to the console for debuginh
- + I can send commands back to envislink via the webgui, although the commands need to be put into an acceptable format.
 
 #### What Doesn't Work ####
   + Everything else...
@@ -33,5 +31,3 @@ Dependencies:
 At the moment [syslogUDP](https://www.npmjs.com/package/syslogudp) is required.
 
 [Bitfield](https://github.com/fb55/bitfield) is required.
-
-[Socket.io](http://socket.io) is required
