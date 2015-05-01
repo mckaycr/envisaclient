@@ -8,12 +8,12 @@ var app = require('http').createServer(handler)
 	,net = require('net')
 	//These two lines are used only if you want to record everything to a syslog server.
 	,syslog = require('syslogudp')
-	,logger = syslog.createClient(514,'127.0.0.1')
+	,logger = syslog.createClient(514,'10.0.0.40')
 	//	strReady indicates the normal state of the system
 	//	I don't want to fill my syslog with this, so if this then don't log
 	,strReady = "%00,01,1C08,08,00"
 	//This is the connection to Envisalink
-	,client = net.createConnection(4025, '127.0.0.1')
+	,client = net.createConnection(4025, '10.0.0.205')
 	,url = require('url')
 	,path = require('path');
 
@@ -72,7 +72,7 @@ client.on('data', function (resp) {
 		// 	Check for empty responses, and anything that matches the system ready response
 		//	We don't want to fill the log with those
 		if(arrLines[i]!=null && arrLines[i].search(strReady)==-1){
-			//console.log(arrLines[i])
+			//console.log(sys_response(arrLines[i].trim()))
 			io.sockets.emit('rxcmd',sys_response(arrLines[i].trim()))
 			logger.log(sys_response(arrLines[i].trim()).raw,syslog.LOG_INFO);
 		}
