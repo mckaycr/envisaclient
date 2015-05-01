@@ -173,6 +173,15 @@ module.exports = function(message){
     	}
     	return arrTemp;
     }
+    var sysEvnt=(function(str){
+    	var objTemp ={
+    		qualifier:str.substr(0,1),
+    		evnt     :str.substr(1,3),
+    		partition:str.substr(4,2),
+    		zoneUser :str.substr(6,3)
+    	}
+    	return objTemp;
+    })
     //This is the fourth part of the Virtual Keypad Update
     var BEEP_field ={
         '00':'OFF',
