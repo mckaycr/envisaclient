@@ -11,14 +11,16 @@ This is my first GitHub project, and I'm still learning how it all works.  The r
 #### What Works ####
 
  + Connection to the Envisalink is established
- + Events are being recieved and are currently being sent to a syslog server
- + The response string from the Envisalink is being converted into an object with properties that match the TPI documentation
+ + Web server starts
+ + The web interface can send and receive commands
 
 #### What Doesn't Work ####
   + Everything else...
-  + Haven't started working on sending commands
-  + No UI started
   + Not even sure where to begin with impleneting API commands
+   
+#### Things to do ####
+  + I want to implement Express, since all the google searches I have done for questions respond with express
+  + I want to integrate passport for authentication, but I also want something that can store user based configs.
 
 Config
 --------
