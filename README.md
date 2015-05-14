@@ -11,7 +11,7 @@ This is my first GitHub project, and I'm still learning how it all works.  The r
 #### What Works ####
 
  + Connection to the Envisalink is established
- + Web server starts
+ + Web server starts (I'm using [ExpressJS](http://expressjs.com/) now since there seems to be a lot of modules build for it like authentication and stuff)
  + The web interface can send and receive commands
 
 #### What Doesn't Work ####
@@ -19,17 +19,35 @@ This is my first GitHub project, and I'm still learning how it all works.  The r
   + Not even sure where to begin with impleneting API commands
    
 #### Things to do ####
-  + I want to implement Express, since all the google searches I have done for questions respond with express
-  + I want to integrate passport for authentication, but I also want something that can store user based configs.
+  + I want to integrate [Passport](http://passportjs.org/) for authentication, but I also want something that can store user based configs.
+  + Eventually going to need to manage user accounts along with user specific settings.  I'm open to ideas.  Probably going to use [redis](http://redis.io/) for the database (if I understand what redis is even for).
 
 Config
 --------
 Everything is hardcoded right now as I'm still working on my initial build.
+So if you have node already installed, then you should just be able to download this repository, then from inside the root folder just type
+
+```
+npm install
+
+```
+
+This starts the server
+
+```
+node bin/www
+```
+
+However if you don't have an envisalink to connect too, I'm to really sure you will see much going on.  I have created a separate project for an [Envisalink Emulator](https://github.com/mckaycr/EnvisalinkEmu), but its a work in progress as well.
+
 
 Dependencies:
 -------------
 [NodeJS](https://nodejs.org/) is required
 
-At the moment [syslogUDP](https://www.npmjs.com/package/syslogudp) is required.
+This will download the rest of the dependencies
 
-[Bitfield](https://github.com/fb55/bitfield) is required.
+```
+npm install
+
+```
