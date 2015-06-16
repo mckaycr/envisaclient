@@ -1,0 +1,17 @@
+{
+  "users": {
+    	"password": "MoeBas54"
+   },
+   "webserver": {
+      "host": "localhost",
+      "port": "81"
+    },
+    "syslog": {
+      "host": "localhost",
+      "port": "514"
+    },
+    "envisalink": {
+      "host": "localhost",
+      "port": "4025"
+    }
+}
