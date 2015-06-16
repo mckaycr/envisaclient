@@ -1,6 +1,7 @@
 //This module accepts a string from the Envsialink and converts it to an object
 //Eamples of expected responses:
 //	%01,5C08,08,00,two line 32 byte ASCII String of test$
+//  or
 //	%01,0100000000000080$
 module.exports = function(message){
 	//hex2bin will help convert some of this string into binary
