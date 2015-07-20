@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-
+process.env.NODE_CONFIG_DIR = '../config'
 var app = require('../app');
 var config = require('config');
 var debug = require('debug')('envisaclient:server');
