@@ -55,4 +55,4 @@ npm install
 Special Thanks
 ---------------
 [Koding](https://koding.com)
-![koding](https://assets.brandfolder.com/odxjy2-1vxsm0-4mqaom/original/Koding_Logo_Color.png)
+![koding](https://assets.brandfolder.com/odxjy2-1vxsm0-4mqaom/original/Koding_Logo_Color.png = 20%)
